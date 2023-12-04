@@ -1,1 +1,2 @@
 FLASK==3.0.0
+Flask-PyMongo==2.3.0
