@@ -8,7 +8,11 @@ COPY ./requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip3 install flask_pymongo
+RUN pip install flask_sqlalchemy
+
+RUN pip install mysql-connector-python
+
+RUN pip install flask-cors
 
 COPY . .
 

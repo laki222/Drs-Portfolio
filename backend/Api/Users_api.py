@@ -14,7 +14,7 @@ def get_users():
                   "grad": user.City, "drzava": user.Country, "broj_telefona": user.Phone,
                   "email": user.Email, "lozinka": user.Password} for user in users]
     
-    print(user_list)
+   
     return jsonify(user_list)
 
 
@@ -36,7 +36,6 @@ def login():
 
 @users_api.route('/api/register', methods=['POST'])
 def register():
-    
     user_data = request.get_json()
     user_register = User(**user_data)
     existing_user = User.query.filter_by(Email=user_register.Email).first()
@@ -46,6 +45,13 @@ def register():
         db.session.add(user_register)
         db.session.commit()
 
-        return jsonify({"message": "Register successful"}), 200
+        # Odmah nakon registracije, dohvatite novoregistrovanog korisnika
+        new_user = User.query.filter_by(Email=user_register.Email).first()
+
+        # Vratite samo email novoregistrovanog korisnika
+        return jsonify({
+            "message": "Register successful",
+            "email": new_user.Email
+        }), 200
 
     return jsonify({"message": "User with this email already exists"}), 401

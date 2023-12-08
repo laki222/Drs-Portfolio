@@ -1,14 +1,14 @@
 import './App.css';
 import {useState, useEffect} from 'react';
-import { Channel } from './Components/Channel/Channel'
+import { Register } from './Components/register';
 
 function App() {
 
   const [initialState, setState] = useState([])
-  const url = "/api"
+  
   
   useEffect(()=> {
-    fetch(url).then(response => {
+    fetch('http://127.0.0.1:5000/api/users').then(response => {
       if(response.status === 200){
         return response.json()
       }
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div className="App">
-      <Channel data={initialState}/>
+      <Register data={initialState}/>
     </div>
   );
 }
