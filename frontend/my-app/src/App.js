@@ -1,23 +1,61 @@
-import './App.css';
-import {useState, useEffect} from 'react';
-import { Register } from './Components/register';
+import React, { } from 'react';
+import './App.css';   
+import {BrowserRouter, Routes, Route} from 'react-router-dom'; 
+import Login from './components/Login'
+import Header from './components/Header'
+import Profile from './components/Profile'
+import useToken from './components/useToken'
+import Register from './components/Register'
 
 function App() {
+  const { token, removeToken, setToken } = useToken();
 
-  const [initialState, setState] = useState([])
-  
-  
-  useEffect(()=> {
-    fetch('http://127.0.0.1:5000/api/users').then(response => {
-      if(response.status === 200){
-        return response.json()
-      }
-    }).then(data => setState(data))
-  }, [])
+  const queryParams = new URLSearchParams(window.location.search);
+  const messageFromLogin = queryParams.get("message");
+
+  const queryParams1 = new URLSearchParams(window.location.search);
+  const messageFromRegister= queryParams1.get("messageRegister");
 
   return (
-    <div className="App">
-      <Register data={initialState}/>
+    <div className="vh-100 gradient-custom">
+      <div className="container">
+        <BrowserRouter>
+          <Header token={removeToken} />
+          {!token && token !== "" && token !== undefined ? (
+            // Check the message and render Login or Register component accordingly
+            <Routes>
+              <Route
+              path="/"
+              element={<Login setToken={setToken} />}
+            />
+              {messageFromLogin === "HelloFromLogin" ? (
+                <Route
+                  path="/register"
+                  element={<Register setToken={setToken} />}
+                />
+              ) :  null}
+
+          {messageFromRegister === "HelloFromRegister" ? (
+                <Route
+                  path="/"
+                  element={<Login setToken={setToken} />}
+                />
+              ) :  null}
+
+
+            </Routes>
+          ) : (
+            <>
+              <Routes>
+                <Route
+                  path="/profile"
+                  element={<Profile token={token} setToken={setToken} />}
+                />
+              </Routes>
+            </>
+          )}
+        </BrowserRouter>
+      </div>
     </div>
   );
 }
