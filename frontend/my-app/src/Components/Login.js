@@ -26,7 +26,7 @@ function Login(props) {
             props.setToken(response.data.access_token)
             alert("Successfully Login");
             localStorage.setItem('email', loginForm.email)
-            navigate('/profile');
+            navigate('/home');
         }).catch((error) => {
             if (error.response) {
               console.log(error.response)
@@ -87,7 +87,7 @@ function Login(props) {
                   <div className="text-center text-lg-start mt-4 pt-2">
                     <button type="button" className="btn btn-primary btn-lg" onClick={btnlogin} >Login</button>
                     <p className="small fw-bold mt-2 pt-1 mb-0">Don't have an account?{' '}
-  <a  className="link-danger"   href="/register?message=HelloFromLogin" >
+  <a  className="link-danger"   href="/register" >
     Register
   </a>
 </p>

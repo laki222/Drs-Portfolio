@@ -141,7 +141,7 @@ function Register(props) {
       
                     <div className="text-center text-lg-start mt-4 pt-2">
                       <button type="button" className="btn btn-primary btn-lg" onClick={btnregister}>Register</button>
-                      <p className="small fw-bold mt-2 pt-1 mb-0">Have an account? <a  href="/?messageRegister=HelloFromRegister" className="link-danger">Login</a></p>
+                      <p className="small fw-bold mt-2 pt-1 mb-0">Have an account? <a  href="/login" className="link-danger">Login</a></p>
                     </div>
       
                   </form>

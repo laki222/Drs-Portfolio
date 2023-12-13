@@ -6,6 +6,8 @@ import Header from './components/Header'
 import Profile from './components/Profile'
 import useToken from './components/useToken'
 import Register from './components/Register'
+import Home from './components/Home'
+
 
 function App() {
   const { token, removeToken, setToken } = useToken();
@@ -25,24 +27,18 @@ function App() {
             // Check the message and render Login or Register component accordingly
             <Routes>
               <Route
-              path="/"
-              element={<Login setToken={setToken} />}
+              exact path="/"
+              element={<Home setToken={setToken} />}
             />
-              {messageFromLogin === "HelloFromLogin" ? (
+              
                 <Route
                   path="/register"
                   element={<Register setToken={setToken} />}
                 />
-              ) :  null}
-
-          {messageFromRegister === "HelloFromRegister" ? (
                 <Route
-                  path="/"
+                  path="/login"
                   element={<Login setToken={setToken} />}
                 />
-              ) :  null}
-
-
             </Routes>
           ) : (
             <>
@@ -51,6 +47,12 @@ function App() {
                   path="/profile"
                   element={<Profile token={token} setToken={setToken} />}
                 />
+
+                <Route
+                  path="/home"
+                  element={<Home token={token} setToken={setToken} />}
+                />
+
               </Routes>
             </>
           )}
