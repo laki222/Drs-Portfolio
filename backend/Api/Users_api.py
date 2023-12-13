@@ -106,3 +106,36 @@ def my_profile(email):
     }
   
     return response_body
+
+
+@users_api.route('/api/edit/<email>',methods=["PUT"])
+@jwt_required() 
+def edit_profile(email):
+    data = request.get_json()
+    print(email)
+    if not email:
+        return jsonify({"error": "Unauthorized Access"}), 401
+       
+    user = User.query.filter_by(Email=email).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    
+    user.Password = data.get('password', user.Password)
+    user.FirstName = data.get('firstName', user.FirstName)
+    user.LastName = data.get('lastName', user.LastName)
+    user.Phone = data.get('phone', user.Phone)
+    user.Country = data.get('country', user.Country)
+    user.City = data.get('city', user.City)
+    user.Address = data.get('address', user.Address)
+
+    try:
+        db.session.commit()
+        return jsonify({"message": "Profile updated successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Failed to update profile. Error: {str(e)}"}), 500
+    finally:
+        db.session.close()
+
+

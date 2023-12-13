@@ -12,12 +12,6 @@ import Home from './components/Home'
 function App() {
   const { token, removeToken, setToken } = useToken();
 
-  const queryParams = new URLSearchParams(window.location.search);
-  const messageFromLogin = queryParams.get("message");
-
-  const queryParams1 = new URLSearchParams(window.location.search);
-  const messageFromRegister= queryParams1.get("messageRegister");
-
   return (
     <div className="vh-100 gradient-custom">
       <div className="container">
