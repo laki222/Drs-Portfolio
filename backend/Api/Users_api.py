@@ -88,6 +88,8 @@ def logout():
 @users_api.route('/api/profile/<email>',methods=["GET"])
 @jwt_required() 
 def my_profile(email):
+    user_email = get_jwt_identity()
+    print(user_email)
     print(email)
     if not email:
         return jsonify({"error": "Unauthorized Access"}), 401

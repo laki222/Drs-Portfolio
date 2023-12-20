@@ -1,7 +1,6 @@
 from datetime import timedelta
 from flask import Flask, jsonify
-from Model.User import db, User
-from Model.Transaction import CryptoTransaction,TransactionType
+from Api.Database import db
 from sqlalchemy import inspect
 from sqlalchemy import text
 from Api.Transactions_api import transactions_api
