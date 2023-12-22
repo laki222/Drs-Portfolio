@@ -32,7 +32,9 @@ function Header(props) {
 
       navigate("/login");
     }
-
+    function btnTransactions(){
+    navigate("/transactions");
+    }
 
      
     const logged = localStorage.getItem('email');
@@ -40,20 +42,25 @@ function Header(props) {
     return(
         <nav className="navbar navbar-expand-lg bg-light">
           <div className="container-fluid">
-            <a className="navbar-brand" href="/">Home</a>
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
-            </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             {!logged ? (
             <>
+            <a className="navbar-brand" href="/">Home</a>
+            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+            </button>
             <button className="btn btn-outline-success" type="submit" onClick={btnLogin} >Login</button>
             </>) : 
             (
-              <>
+            <>
+              <a className="navbar-brand" href="/home">Home</a>
+              <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+              </button>
+              <button className="btn btn-outline-success" type="submit" onClick={btnTransactions} >Transactions</button>
               <button className="btn btn-outline-success" type="submit" onClick={btnProfile} >Profile</button>
               <button className="btn btn-outline-danger" type="submit" onClick={logMeOut}>Logout</button>
-              </>
+            </>
            
             )}
           </div>

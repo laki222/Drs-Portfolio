@@ -7,7 +7,8 @@ import Profile from './components/Profile'
 import useToken from './components/useToken'
 import Register from './components/Register'
 import Home from './components/Home'
-
+import HomeNotLogged from './components/HomeNotLogged'
+import Transactions from './components/Transactions';
 
 function App() {
   const { token, removeToken, setToken } = useToken();
@@ -22,7 +23,7 @@ function App() {
             <Routes>
               <Route
               exact path="/"
-              element={<Home setToken={setToken} />}
+              element={<HomeNotLogged setToken={setToken} />}
             />
               
                 <Route
@@ -46,7 +47,10 @@ function App() {
                   path="/home"
                   element={<Home token={token} setToken={setToken} />}
                 />
-
+                <Route
+                  path="/transactions"
+                  element={<Transactions token={token} setToken={setToken} />}
+                />
               </Routes>
             </>
           )}

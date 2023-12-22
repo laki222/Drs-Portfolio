@@ -15,7 +15,7 @@ function Profile(props) {
     
     useEffect(() => {
         getUsers();
-    }, []);
+    });
      
     const email = localStorage.getItem('email');
      
@@ -61,7 +61,6 @@ function Profile(props) {
     
 
     const handleSave = () => {
-
       if (currentPassword.Password !== formData.Password) {
         console.error("Uneseni password se ne poklapa sa trenutnim passwordom.");
         return;
