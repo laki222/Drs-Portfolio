@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 function Transactions(props) {
   const [transactionData, setTransactionData] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getTransactions();
@@ -25,6 +28,27 @@ function Transactions(props) {
         console.error(error);
       });
   }
+
+  function btnRemove(id){
+    axios({
+      method: "POST",
+      url:`http://127.0.0.1:5000/api/transactionremove/${id}`, 
+      headers: {
+        Authorization: 'Bearer ' + props.token
+      }
+    })
+    .then((response) => {
+      console.log(response)
+      alert("Successfully removed transaction");
+      navigate('/transactions');
+      
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+  }
+
+
 
   return (
     <div>
@@ -49,7 +73,7 @@ function Transactions(props) {
               <td>{transaction.amount}</td>
               <td>{transaction.usd_value}</td>
               <td>
-                <button type="button" className="btn btn-primary">
+                <button type="button" className="btn btn-primary" onClick={() => btnRemove(transaction.id)}>
                   Remove 
                 </button>
               </td>

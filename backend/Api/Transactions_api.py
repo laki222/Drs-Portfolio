@@ -42,6 +42,7 @@ def get_transactions():
     transactions = CryptoTransaction.query.filter_by(User_email=user_email).all()
     transaction_list = [
         {
+            "id":transaction.id,
             "crypto_currency": transaction.Crypto_currency, 
             "transaction_type": transaction.Transaction_type.value,
             "amount": transaction.Amount,
@@ -53,3 +54,22 @@ def get_transactions():
     ]
 
     return jsonify(transaction_list)
+
+
+
+@transactions_api.route('/api/transactionremove/<id>', methods=['POST'])
+@jwt_required() 
+def transactionRemove(id):
+    try:
+        user_email = get_jwt_identity()
+        transaction = CryptoTransaction.query.filter_by(id=id, User_email=user_email).first()
+
+        if transaction:
+            db.session.delete(transaction)
+            db.session.commit()
+            return jsonify({"message": "Transaction removed successfully"}), 200
+        else:
+            return jsonify({"error": "Transaction not found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
