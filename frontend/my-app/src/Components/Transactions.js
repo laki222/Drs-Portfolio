@@ -53,36 +53,45 @@ function Transactions(props) {
   return (
     <div>
       <h2>Transaction List</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Crypto Currency</th>
-            <th>Transaction Type</th>
-            <th>Transaction Date</th>
-            <th>Amount</th>
-            <th>USD Value</th>
-            <th>Action</th> 
-          </tr>
-        </thead>
-        <tbody>
-          {transactionData.map((transaction, index) => (
-            <tr key={index}>
-              <td>{transaction.crypto_currency}</td>
-              <td>{transaction.transaction_type}</td>
-              <td>{transaction.transaction_date}</td>
-              <td>{transaction.amount}</td>
-              <td>{transaction.usd_value}</td>
-              <td>
-                <button type="button" className="btn btn-primary" onClick={() => btnRemove(transaction.id)}>
-                  Remove 
-                </button>
-              </td>
+      {transactionData.length === 0 ? (
+        <p>No transactions have been made.Go to <a href='/home'>home</a> to create one </p>
+      ) : (
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Crypto Currency</th>
+              <th>Transaction Type</th>
+              <th>Transaction Date</th>
+              <th>Amount</th>
+              <th>USD Value</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {transactionData.map((transaction, index) => (
+              <tr key={index}>
+                <td>{transaction.crypto_currency}</td>
+                <td>{transaction.transaction_type}</td>
+                <td>{transaction.transaction_date}</td>
+                <td>{transaction.amount}</td>
+                <td>{transaction.usd_value}</td>
+                <td>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => btnRemove(transaction.id)}
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
+  
 }
 
 
