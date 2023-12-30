@@ -7,8 +7,12 @@ from Model.Transaction import CryptoTransaction, TransactionType
 from datetime import datetime
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, unset_jwt_cookies, jwt_required
 import requests
+import functools
+from datetime import datetime, timedelta
+
 transactions_api = Blueprint("Transactions_api", __name__)
 LIVE_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price"
+
 @transactions_api.route('/api/transaction', methods=['POST'])
 @jwt_required() 
 def transaction():
@@ -87,28 +91,32 @@ def portfolioCalculate():
             "coins": 0,
             "total_cost": 0,
             "total_equity": 0,
-            "live_price": 0
+            "live_price": 0,
+            "percent": 0
         }
     )
 
+    value_accumulator = 0
+    cost_accumulator = 0
     result = (
-    CryptoTransaction.query
-    .with_entities(
-        CryptoTransaction.Crypto_currency.label('Crypto_currency'),
-        CryptoTransaction.Transaction_type.label('Transaction_type'),
-        func.sum(CryptoTransaction.Amount).label('Amount'),
-        func.sum(CryptoTransaction.Usd_value).label('Usd_value')
+        CryptoTransaction.query
+        .with_entities(
+            CryptoTransaction.Crypto_currency.label('Crypto_currency'),
+            CryptoTransaction.Transaction_type.label('Transaction_type'),
+            func.sum(CryptoTransaction.Amount).label('Amount'),
+            func.sum(CryptoTransaction.Usd_value).label('Usd_value')
+        )
+        .filter(CryptoTransaction.User_email == user_email)
+        .group_by(CryptoTransaction.Crypto_currency, CryptoTransaction.Transaction_type)
+        .all()
     )
-    .filter(CryptoTransaction.User_email == user_email)
-    .group_by(CryptoTransaction.Crypto_currency, CryptoTransaction.Transaction_type)
-    .all()
-    )
+
     for row in result:
         coin = row.Crypto_currency
         transaction_type = row.Transaction_type
         transaction_Usd = row.Usd_value
-        transaction_coins =row.Amount
-        print(row)
+        transaction_coins = row.Amount
+
         # This is a purchase
         if transaction_type == TransactionType.buy:
             portfolio[coin]['total_cost'] += transaction_Usd
@@ -127,23 +135,35 @@ def portfolioCalculate():
         "MANA": "decentraland",
     }
     rollups_response = []
+
     for symbol in portfolio:
         response = requests.get(
             f"{LIVE_PRICE_URL}?ids={symbol_to_coin_id_map[symbol]}&vs_currencies=usd")
         data = response.json()
         live_price = data[symbol_to_coin_id_map[symbol]]['usd']
-        print(live_price)
+
         portfolio[symbol]['live_price'] = live_price
         portfolio[symbol]['total_equity'] = float(
             portfolio[symbol]['coins']) * live_price
 
+        cost_accumulator += portfolio[symbol]["total_cost"]
+        value_accumulator += portfolio[symbol]['total_equity']
+    
+        absolute_gain = value_accumulator - cost_accumulator
+       
+        portfolio[symbol]['percent'] = ((absolute_gain / cost_accumulator) * 100)
+      
+        cost_accumulator=0
+        value_accumulator=0
         rollups_response.append(
             {
                 "symbol": symbol,
                 "live_price": portfolio[symbol]['live_price'],
                 "total_equity": portfolio[symbol]['total_equity'],
                 "coins": portfolio[symbol]['coins'],
-                "total_cost": portfolio[symbol]["total_cost"]
+                "total_cost": portfolio[symbol]["total_cost"],
+                "percent": portfolio[symbol]['percent']
             }
         )
+
     return jsonify(rollups_response)

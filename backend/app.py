@@ -9,7 +9,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:test123@localhost/projekat?auth_plugin=mysql_native_password'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'lazar-brankovic'
