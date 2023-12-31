@@ -13,9 +13,16 @@ function Profile(props) {
     const [editMode, setEditMode] = useState(false);
     
     
+    const [profileDataCheck, setProfileDataCheck] = useState(false);
+
+
+
     useEffect(() => {
+      if (!profileDataCheck) {
         getUsers();
-    });
+      }
+    }, [profileDataCheck]);
+
      
     const email = localStorage.getItem('email');
      
@@ -47,7 +54,7 @@ function Profile(props) {
           Password:res.Password      
       }))
 
-
+      setProfileDataCheck(true);
 
         }).catch((error) => {
           if (error.response) {
@@ -87,7 +94,7 @@ function Profile(props) {
         .then((response) => {
           console.log(response);
           closeModal(); // Zatvori modal nakon što se podaci sačuvaju
-          getUsers();
+          setProfileDataCheck(false);
         })
         .catch((error) => {
           console.error('Error updating profile:', error);

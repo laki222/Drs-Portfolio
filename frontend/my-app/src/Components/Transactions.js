@@ -6,10 +6,20 @@ function Transactions(props) {
   const [transactionData, setTransactionData] = useState([]);
 
   const navigate = useNavigate();
-
+/*
   useEffect(() => {
     getTransactions();
   });
+*/
+  const [transactionDataCheck, setPortfolioDataCheck] = useState(false);
+
+
+
+    useEffect(() => {
+      if (!transactionDataCheck) {
+        getTransactions();
+      }
+    }, [transactionDataCheck]);
 
 
   function getTransactions() {
@@ -22,7 +32,8 @@ function Transactions(props) {
     })
       .then((response) => {
         console.log(response);
-        setTransactionData(response.data); // Postavljanje podataka u state
+        setTransactionData(response.data);
+        setPortfolioDataCheck(true); // Postavljanje podataka u state
       })
       .catch((error) => {
         console.error(error);
@@ -40,7 +51,8 @@ function Transactions(props) {
     .then((response) => {
       console.log(response)
       alert("Successfully removed transaction");
-      navigate('/transactions');
+      setPortfolioDataCheck(false);
+      
       
   })
   .catch((error) => {
@@ -70,7 +82,7 @@ function Transactions(props) {
           <tbody>
             {transactionData.map((transaction, index) => (
               <tr key={index}>
-                <td>{transaction.crypto_currency}</td>
+                <td><b>{transaction.crypto_currency}</b></td>
                 <td>{transaction.transaction_type}</td>
                 <td>{transaction.transaction_date}</td>
                 <td>{transaction.amount}</td>

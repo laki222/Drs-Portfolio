@@ -167,3 +167,26 @@ def portfolioCalculate():
         )
 
     return jsonify(rollups_response)
+
+
+
+@transactions_api.route('/api/cryptoremove/<name>', methods=['POST'])
+@jwt_required() 
+def cryptoRemove(name):
+    try:
+        user_email = get_jwt_identity()
+
+        transactions = CryptoTransaction.query.filter_by(User_email=user_email, Crypto_currency=name).all()
+
+        if transactions:
+            for transaction in transactions:
+                db.session.delete(transaction)
+
+            db.session.commit()
+
+            return jsonify({"message": "Cryto currency removed successfully"}), 200
+        else:
+            return jsonify({"error": "No transactions found with the specified name"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

@@ -248,7 +248,9 @@ const filteredRollups = rollups.filter((item) =>
           }}
         >
           <XAxis dataKey="symbol" />
+          
           <YAxis domain={['auto', 'auto']}/>
+          
           <Tooltip />
           <Legend />
           <Bar dataKey="total_equity" fill="#00C49F" name="Total Value">
@@ -256,7 +258,9 @@ const filteredRollups = rollups.filter((item) =>
           dataKey="total_equity" 
           position="top"
           formatter={(value) => `$${value.toFixed(2)}`} />
+        
           </Bar>
+        
           <Bar dataKey="total_cost" fill="#FFBB28" name="Total Cost">
           <LabelList
           dataKey="total_cost"
@@ -272,6 +276,11 @@ const filteredRollups = rollups.filter((item) =>
           />
           </Bar>
         </BarChart>
+
+        <Button fontSize="2xl" width={200} height={55} size="lg" bg="red" colorScheme="green" onClick={openModal}>
+            Remove Crypto currency
+          </Button>
+
         <HStack>
           <VStack>
             <Text>Cost Distribution</Text>
@@ -298,8 +307,6 @@ const filteredRollups = rollups.filter((item) =>
             </PieChart>
           </VStack>
         </HStack>
-
-
         </VStack>
       </Center>
 
