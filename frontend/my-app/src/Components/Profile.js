@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import Modal from 'react-modal';
 
@@ -15,7 +16,7 @@ function Profile(props) {
     
     const [profileDataCheck, setProfileDataCheck] = useState(false);
 
-
+    const navigate = useNavigate();
 
     useEffect(() => {
       if (!profileDataCheck) {
@@ -102,7 +103,25 @@ function Profile(props) {
     };
 
 
-
+    function logMeOut() {
+      console.log("kliknuo")
+      axios({
+          method: "POST",
+          url:"http://127.0.0.1:5000/api/logout",
+      })
+      .then((response) => {
+          props.removeToken()
+          console.log("usao")
+          localStorage.removeItem('email')
+          navigate("/");
+      }).catch((error) => {
+          if (error.response) {
+              console.log(error.response)
+              console.log(error.response.status)
+              console.log(error.response.headers)
+          }
+      })
+  }
 
 
     const openModal = () => {
@@ -162,7 +181,10 @@ function Profile(props) {
                             <p className="text-muted">{`${profileData.City}, ${profileData.Address}`}</p>
                           </div>
                           <div className="col-6 mb-3">
-                            <button type="button" className="btn btn-primary btn-lg" onClick={openModal} >Edit Profile</button>
+                            <button type="button" className="btn btn-lg btn-outline-light bg-dark" onClick={openModal} >Edit Profile</button>
+                          </div>
+                          <div className="col-6 mb-3">
+                          <button type="button" className="btn btn-lg btn-outline-danger bg-dark" onClick={() => logMeOut()}>Logout</button>
                           </div>
                         </div>
                       </div>

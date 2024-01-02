@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import {Text, Box, Heading, Link, Table, Thead, Tr, Th, Tbody, Td, Button } from "@chakra-ui/react";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+
 
 function Transactions(props) {
   const [transactionData, setTransactionData] = useState([]);
 
-  const navigate = useNavigate();
 /*
   useEffect(() => {
     getTransactions();
@@ -63,45 +63,45 @@ function Transactions(props) {
 
 
   return (
-    <div>
-      <h2>Transaction List</h2>
+    <Box>
+      <Heading>Transaction List</Heading>
       {transactionData.length === 0 ? (
-        <p>No transactions have been made.Go to <a href='/home'>home</a> to create one </p>
+        <Text>No transactions have been made.Go to <Link href='/home'>home</Link> to create one </Text>
       ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Crypto Currency</th>
-              <th>Transaction Type</th>
-              <th>Transaction Date</th>
-              <th>Amount</th>
-              <th>USD Value</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table className="table">
+          <Thead>
+            <Tr>
+              <Th>Crypto Currency</Th>
+              <Th>Transaction Type</Th>
+              <Th>Transaction Date</Th>
+              <Th>Amount</Th>
+              <Th>USD Value</Th>
+              <Th>Action</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
             {transactionData.map((transaction, index) => (
-              <tr key={index}>
-                <td><b>{transaction.crypto_currency}</b></td>
-                <td>{transaction.transaction_type}</td>
-                <td>{transaction.transaction_date}</td>
-                <td>{transaction.amount}</td>
-                <td>{transaction.usd_value}</td>
-                <td>
-                  <button
+              <Tr key={index}>
+                <Td><b>{transaction.crypto_currency}</b></Td>
+                <Td>{transaction.transaction_type}</Td>
+                <Td>{transaction.transaction_date}</Td>
+                <Td>{transaction.amount}</Td>
+                <Td>{transaction.usd_value}</Td>
+                <Td>
+                  <Button
                     type="button"
                     className="btn btn-primary"
                     onClick={() => btnRemove(transaction.id)}
                   >
                     Remove
-                  </button>
-                </td>
-              </tr>
+                  </Button>
+                </Td>
+              </Tr>
             ))}
-          </tbody>
-        </table>
+          </Tbody>
+        </Table>
       )}
-    </div>
+    </Box>
   );
   
 }

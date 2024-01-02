@@ -40,7 +40,7 @@ function App() {
               <Routes>
                 <Route
                   path="/profile"
-                  element={<Profile token={token} setToken={setToken} />}
+                  element={<Profile token={token} setToken={setToken} removeToken={removeToken} />}
                 />
 
                 <Route

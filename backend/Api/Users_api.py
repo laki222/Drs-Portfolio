@@ -81,8 +81,10 @@ def refresh_expiring_jwts(response):
  
 @users_api.route("/api/logout", methods=["POST"])
 def logout():
+    print("aa")
     response = jsonify({"message": "logout successful"})
     unset_jwt_cookies(response)
+    print(response)
     return response
 
 @users_api.route('/api/profile/<email>',methods=["GET"])

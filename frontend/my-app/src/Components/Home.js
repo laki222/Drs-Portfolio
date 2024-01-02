@@ -7,10 +7,17 @@ import {
   Text,
   Heading,
   VStack,
-  Button,
   useDisclosure,
   Container,
-  HStack,
+  HStack, 
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  Input,
 } from "@chakra-ui/react";
 import {
   PieChart,
@@ -45,6 +52,8 @@ function Home(props) {
 
     const [editMode, setEditMode] = useState(false);
     
+    const [editModeCrypto, setEditModeCrypto] = useState(false);
+
     const [portfolioCost, setPortfolioCost] = useState(0);
     const [portfolioValue, setPortfolioValue] = useState(0);
     const [absoluteGain, setAbsoluteGain] = useState(0);
@@ -77,6 +86,27 @@ function Home(props) {
         });
     };
 
+    function removeCrypto(Cryptoname){
+      axios({
+        method: "POST",
+        url:`http://127.0.0.1:5000/api/cryptoremove/${Cryptoname}`, 
+        headers: {
+          Authorization: 'Bearer ' + props.token
+        }
+      })
+      .then((response) => {
+        console.log(response)
+        alert("Successfully removed crypto");
+        setPortfolioDataFetched(false)
+        closeModalCrypto(); 
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    }
+
+
+
     const openModal = () => {
       setEditMode(true);
     };
@@ -85,6 +115,14 @@ function Home(props) {
       setEditMode(false);
     };
 
+    
+    const openModalCrypto = () => {
+      setEditModeCrypto(true);
+    };
+  
+    const closeModalCrypto = () => {
+      setEditModeCrypto(false);
+    };
     
     const [portfolioDataFetched, setPortfolioDataFetched] = useState(false);
 
@@ -173,6 +211,7 @@ const filteredRollups = rollups.filter((item) =>
   item.symbol.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const [name, setName] = useState("");
     return (
      
               <>
@@ -180,7 +219,6 @@ const filteredRollups = rollups.filter((item) =>
         <Center bg="white" color="black" padding={8}>
         <VStack spacing={7}>
           <Heading>Crypto Portfolio</Heading>
-          <Text>This is the current state of your portfolio</Text>
           <Button fontSize="2xl" width={200} height={55} size="lg" bg="green" colorScheme="green" onClick={openModal}>
             Add Transaction
           </Button>
@@ -241,7 +279,7 @@ const filteredRollups = rollups.filter((item) =>
           height={500}
           data={rollups}
           margin={{
-            top: 15,
+            top: 20,
             right: 30,
             left: 20,
             bottom: 5,
@@ -257,7 +295,8 @@ const filteredRollups = rollups.filter((item) =>
           <LabelList 
           dataKey="total_equity" 
           position="top"
-          formatter={(value) => `$${value.toFixed(2)}`} />
+          formatter={(value) => `$${value.toFixed(2)}`}
+          spacing={10} />
         
           </Bar>
         
@@ -277,36 +316,11 @@ const filteredRollups = rollups.filter((item) =>
           </Bar>
         </BarChart>
 
-        <Button fontSize="2xl" width={200} height={55} size="lg" bg="red" colorScheme="green" onClick={openModal}>
+        <Button fontSize="2xl" width={200} height={55} size="lg" bg="red" colorScheme="green" onClick={openModalCrypto}>
             Remove Crypto currency
           </Button>
 
-        <HStack>
-          <VStack>
-            <Text>Cost Distribution</Text>
-            <PieChart width={250} height={250}>
-              <Pie data={rollups} dataKey="total_cost" nameKey="symbol">
-                {rollups.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Legend></Legend>
-              <Tooltip></Tooltip>
-            </PieChart>
-          </VStack>
-          <VStack>
-            <Text>Value Distribution</Text>
-            <PieChart width={250} height={250}>
-              <Pie data={rollups} dataKey="total_equity" nameKey="symbol">
-                {rollups.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Legend></Legend>
-              <Tooltip></Tooltip>
-            </PieChart>
-          </VStack>
-        </HStack>
+    
         </VStack>
       </Center>
 
@@ -315,6 +329,8 @@ const filteredRollups = rollups.filter((item) =>
                   onRequestClose={closeModal}
                   contentLabel="Edit Profile Modal"
                   ariaHideApp={false}
+                  style={{ content: { height: '65%',margin: 'auto', width: '25%', background: 'none', 
+        border: 'none' } }}
                 >
                   <div className="modal-dialog" role="document" >
                     <div className="modal-content d-flex flex-column h-100">
@@ -419,10 +435,53 @@ const filteredRollups = rollups.filter((item) =>
                     </div>
                   </div>
                 </Modal>
-              </>
-            
-       
-    );    
-}
+
+                <Modal
+        isOpen={editModeCrypto}
+        onRequestClose={closeModalCrypto}
+        contentLabel="Edit Profile Modal"
+        ariaHideApp={false}
+        style={{ content: { height: '40%',margin: 'auto', width: '25%', background: 'none', 
+        border: 'none' } }}
+      >
+        <div className="modal-dialog" role="document">
+          <div className="modal-content d-flex flex-column h-100">
+            <div className="modal-header">
+              <h5 className="modal-title" id="editProfileModalLabel">
+                Remove Crypto currency
+              </h5>
+              <button type="button" className="close" onClick={closeModalCrypto} aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body flex-grow-1">
+              <form>
+                <div className="form-group">
+                  <label htmlFor="name">Crypto Currency</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    name="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" onClick={closeModalCrypto}>
+                Close
+              </button>
+              <button type="button" className="btn btn-primary"  onClick={() => removeCrypto(name)}>
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+    </>
+  );
+};
  
 export default Home;
