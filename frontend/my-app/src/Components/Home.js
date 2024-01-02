@@ -1,49 +1,24 @@
 import React, { useState, useEffect} from "react";
 import axios from "axios";
 import Modal from 'react-modal';
-import { useNavigate } from "react-router-dom";
 import {
   Center,
   Text,
   Heading,
   VStack,
-  useDisclosure,
   Container,
   HStack, 
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Button,
-  Input,
 } from "@chakra-ui/react";
 import {
-  PieChart,
-  Pie,
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   Tooltip,
   Legend,LabelList 
 } from "recharts";
 
-const COLORS = [
-  "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#F28042",
-  "#9fd3c7",
-  "#142d4c",
-  "#feff9a",
-  "#ffb6b9",
-  "#fae3d9",
-  "#bbded6",
-  "#61c0bf",
-];
 
 
 function Home(props) {
@@ -59,7 +34,6 @@ function Home(props) {
     const [absoluteGain, setAbsoluteGain] = useState(0);
     const [totalGainPercent, setTotalGainPercent] = useState(0);
     const [rollups, setRollups] = useState([]);
-    const navigate = useNavigate();
     const handleSave = () => {
 
       axios({
@@ -211,6 +185,8 @@ const filteredRollups = rollups.filter((item) =>
   item.symbol.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const podaciZaGrafikon = searchTerm !== '' ? filteredRollups : rollups;
+
   const [name, setName] = useState("");
     return (
      
@@ -277,7 +253,7 @@ const filteredRollups = rollups.filter((item) =>
         <BarChart
           width={600}
           height={500}
-          data={rollups}
+          data={podaciZaGrafikon}
           margin={{
             top: 20,
             right: 30,
