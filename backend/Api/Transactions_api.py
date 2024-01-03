@@ -11,7 +11,7 @@ import functools
 from datetime import datetime, timedelta
 
 transactions_api = Blueprint("Transactions_api", __name__)
-LIVE_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price"
+LIVE_PRICE_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
 
 @transactions_api.route('/api/transaction', methods=['POST'])
 @jwt_required() 
@@ -135,36 +135,46 @@ def portfolioCalculate():
         "MANA": "decentraland",
     }
     rollups_response = []
-
+    params = {
+            'convert': 'USD'
+        }
+    headers = {
+            'Accepts': 'application/json',
+            'X-CMC_PRO_API_KEY': '0ffb8b91-f77d-4f1a-8c38-15b6aa7c60fd',
+        }
+    response = requests.get(LIVE_PRICE_URL, params=params, headers=headers)
+    data = response.json()
     for symbol in portfolio:
-        response = requests.get(
-            f"{LIVE_PRICE_URL}?ids={symbol_to_coin_id_map[symbol]}&vs_currencies=usd")
-        data = response.json()
-        live_price = data[symbol_to_coin_id_map[symbol]]['usd']
+        coin_id = symbol_to_coin_id_map.get(symbol, '')
+        print(coin_id)
+        if not coin_id:
+            continue
+     
+        for crypto_data in data['data']:
+              if crypto_data['slug'] == coin_id:
+                live_price = crypto_data['quote']['USD']['price']
+                portfolio[symbol]['total_equity'] = float(
+                        portfolio[symbol]['coins']) * live_price
 
-        portfolio[symbol]['live_price'] = live_price
-        portfolio[symbol]['total_equity'] = float(
-            portfolio[symbol]['coins']) * live_price
-
-        cost_accumulator += portfolio[symbol]["total_cost"]
-        value_accumulator += portfolio[symbol]['total_equity']
-    
-        absolute_gain = value_accumulator - cost_accumulator
-       
-        portfolio[symbol]['percent'] = ((absolute_gain / cost_accumulator) * 100)
-      
-        cost_accumulator=0
-        value_accumulator=0
-        rollups_response.append(
-            {
-                "symbol": symbol,
-                "live_price": portfolio[symbol]['live_price'],
-                "total_equity": portfolio[symbol]['total_equity'],
-                "coins": portfolio[symbol]['coins'],
-                "total_cost": portfolio[symbol]["total_cost"],
-                "percent": portfolio[symbol]['percent']
-            }
-        )
+                cost_accumulator += portfolio[symbol]["total_cost"]
+                value_accumulator += portfolio[symbol]['total_equity']
+                    
+                absolute_gain = value_accumulator - cost_accumulator
+                    
+                portfolio[symbol]['percent'] = ((absolute_gain / cost_accumulator) * 100)
+                    
+                cost_accumulator=0
+                value_accumulator=0
+                rollups_response.append(
+                            {
+                                "symbol": symbol,
+                                "live_price": portfolio[symbol]['live_price'],
+                                "total_equity": portfolio[symbol]['total_equity'],
+                                "coins": portfolio[symbol]['coins'],
+                                "total_cost": portfolio[symbol]["total_cost"],
+                                "percent": portfolio[symbol]['percent']
+                            }
+                        )
 
     return jsonify(rollups_response)
 
