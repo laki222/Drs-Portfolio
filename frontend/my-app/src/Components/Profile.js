@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Box } from "@chakra-ui/react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import Modal from 'react-modal';
@@ -133,51 +134,52 @@ function Profile(props) {
     };
 
     let imgs = [
-      'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp',
+      'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp',
     ];
  
  
     return (
-        <div className="container">
-          <div className="row d-flex justify-content-center align-items-center h-50">
-            <div className="col col-lg-12">
+      <Box h="100vh" maxH={1700}>
+        <div className="container h-950" style={{ backgroundColor: '#191919' }}>
+          <div className="row d-flex justify-content-center align-items-center h-50" style={{ backgroundColor: '#191919' }}>
+            <div className="col col-lg-12 h-950" style={{ backgroundColor: '#191919' }}>
               {profileData && (
-                <div className="card mb-3">
+                <div className="card mb-3" style={{ backgroundColor: '#191919', borderColor: 'white', borderWidth: '1px', borderStyle: 'solid' }}>
                   <div className="row g-0">
                     <div className="col-md-4 bg-c-lite-green text-center text-white">
                       <img src={imgs[0]} className="img-fluid my-5" width="150" alt="Profile" />
                       <h5>{profileData.profile_name}</h5>
-                      <p>Coder</p>
+                      <p>Trader</p>
                       <i className="far fa-edit mb-5"></i>
                     </div>
       
                     <div className="col-md-8">
                       <div className="card-body p-4">
-                        <h6>Your profile details:</h6>
+                        <h4 style={{ color: 'white' }}>Your profile details:</h4>
       
                         <div className="row pt-1">
                           <div className="col-6 mb-3">
-                            <h6>First Name</h6>
-                            <p className="text-muted">{profileData.FirstName}</p>
+                            <h6 style={{ color: 'white' }}>First Name</h6>
+                            <p className="text-muted" style={{ color: 'white' }}>{profileData.FirstName}</p>
                           </div>
                           <div className="col-6 mb-3">
-                            <h6>Last Name</h6>
-                            <p className="text-muted">{profileData.LastName}</p>
+                            <h6 style={{ color: 'white' }}>Last Name</h6>
+                            <p className="text-muted" style={{ color: 'white' }}>{profileData.LastName}</p>
                           </div>
                           <div className="col-6 mb-3">
-                            <h6>Email</h6>
-                            <p className="text-muted">{profileData.Email}</p>
+                            <h6 style={{ color: 'white' }}>Email</h6>
+                            <p className="text-muted" style={{ color: 'white' }}>{profileData.Email}</p>
                           </div>
                           <div className="col-6 mb-3">
-                            <h6>Phone</h6>
+                            <h6 style={{ color: 'white' }}>Phone</h6>
                             <p className="text-muted">{profileData.Phone}</p>
                           </div>
                           <div className="col-6 mb-3">
-                            <h6>Country</h6>
+                            <h6 style={{ color: 'white' }}>Country</h6>
                             <p className="text-muted">{profileData.Country}</p>
                           </div>
                           <div className="col-6 mb-3">
-                            <h6>City and address</h6>
+                            <h6 style={{ color: 'white' }}>City and address</h6>
                             <p className="text-muted">{`${profileData.City}, ${profileData.Address}`}</p>
                           </div>
                           <div className="col-6 mb-3">
@@ -190,12 +192,15 @@ function Profile(props) {
                       </div>
                     </div>
                   </div>
-                 {/* Modal */}
+                  
+                 
           <Modal
             isOpen={editMode}
             onRequestClose={closeModal}
             contentLabel="Edit Profile Modal"
             ariaHideApp={false} 
+            style={{ content: { height: '105%',margin: 'auto', width: '45%', background: 'none', 
+            border: 'none' } }}
           >
             <div className="modal-dialog" role="document">
               <div className="modal-content">
@@ -325,10 +330,10 @@ function Profile(props) {
                   </form>
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" onClick={closeModal}>
+                  <button type="button" className="btn btn-lg btn-outline-light bg-danger" onClick={closeModal}>
                     Close
                   </button>
-                  <button type="button" className="btn btn-primary" onClick={handleSave}>
+                  <button type="button" className="btn btn-lg btn-outline-light bg-success " onClick={handleSave}>
                     Save
                   </button>
                 </div>
@@ -345,6 +350,7 @@ function Profile(props) {
             </div>
           </div>
         </div>
+        </Box>
       );
       
 }

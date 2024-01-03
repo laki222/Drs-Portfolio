@@ -9,6 +9,8 @@ import {
   Container,
   HStack, 
   Button,
+  ChakraProvider,
+  Input
 } from "@chakra-ui/react";
 import {
   BarChart,
@@ -191,66 +193,76 @@ const filteredRollups = rollups.filter((item) =>
     return (
      
               <>
-          
-        <Center bg="white" color="black" padding={8}>
-        <VStack spacing={7}>
-          <Heading>Crypto Portfolio</Heading>
-          <Button fontSize="2xl" width={200} height={55} size="lg" bg="green" colorScheme="green" onClick={openModal}>
+          <ChakraProvider>
+        <Center bg="#191919" color="black" padding={6}>
+        <VStack spacing={7} style={{ color: '191919' }}>
+          <Heading color={'white'}>Crypto Portfolio</Heading>
+          <Button colorScheme='green' variant='solid' borderColor="white" color="white" fontSize="2xl" width={200} height={55} size="lg" bg="green"  onClick={openModal}>
             Add Transaction
           </Button>
 
           <HStack spacing={6}>
-      <Container bg="tomato" >
+      <Container bg="#872642" >
         <VStack width={160}>
-          <Text fontSize="2xl">
+          <Text fontSize="2xl" color="white">
             $ {Number(portfolioCost.toFixed(2)).toLocaleString()}
           </Text>
-          <Text fontSize="xs" size="md">
+          <Text fontSize="xs" size="md" color="white">
           Portfolio Cost
           </Text>
         </VStack>
       </Container>
-      <Container bg="tomato">
+      <Container bg="#872642">
         <VStack width={160}>
-          <Text fontSize="2xl">
+          <Text fontSize="2xl" color="white">
             $ {Number(portfolioValue.toFixed(2)).toLocaleString()}
           </Text>
-          <Text fontSize="xs" size="md">
+          <Text fontSize="xs" size="md" color="white">
           Portfolio Value
           </Text>
         </VStack>
       </Container>
-      <Container bg="tomato">
+      <Container bg="#872642">
         <VStack width={160}>
-          <Text fontSize="2xl">
+          <Text fontSize="2xl" color="white">
             $ {Number(absoluteGain.toFixed(2)).toLocaleString()}
           </Text>
-          <Text fontSize="xs" size="md"> 
+          <Text fontSize="xs" size="md" color="white"> 
           Absolute Gain / Loss 
           </Text>
         </VStack>
       </Container>
-      <Container bg="tomato">
+      <Container bg="#872642 " borderColor='white'>
         <VStack width={160}>
-          <Text fontSize="2xl">
+          <Text fontSize="2xl" color="white">
             {Number(totalGainPercent.toFixed(2)).toLocaleString()} %
             </Text>
-          <Text fontSize="xs" size="md">
+          <Text fontSize="xs" size="md" color="white">
           Gain / Loss %
           </Text>
         </VStack>
       </Container>
     </HStack>
 
-    <input
+    <Input
+        colorScheme='green' variant='solid'
+        focusBorderColor='white'
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        width="100"
+        borderColor='white'
+        color='black'
+        border='white'
         type="text"
         placeholder="Search by symbol"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
-    <Text>Cost vs Equity vs Gain/Loss %</Text>
+    <Text color={'white'}>Cost vs Equity vs Gain/Loss %</Text>
         <BarChart
+        color={'white'}
           width={600}
           height={500}
           data={podaciZaGrafikon}
@@ -269,6 +281,7 @@ const filteredRollups = rollups.filter((item) =>
           <Legend />
           <Bar dataKey="total_equity" fill="#00C49F" name="Total Value">
           <LabelList 
+          color="white"
           dataKey="total_equity" 
           position="top"
           formatter={(value) => `$${value.toFixed(2)}`}
@@ -292,14 +305,14 @@ const filteredRollups = rollups.filter((item) =>
           </Bar>
         </BarChart>
 
-        <Button fontSize="2xl" width={200} height={55} size="lg" bg="red" colorScheme="green" onClick={openModalCrypto}>
+        <Button colorScheme='red' variant='solid' borderColor="white" color="white" fontSize="2xl" width={280} height={55} size="lg" bg="red"  onClick={openModalCrypto}>
             Remove Crypto currency
           </Button>
 
     
         </VStack>
       </Center>
-
+      </ChakraProvider>
                 <Modal
                   isOpen={editMode}
                   onRequestClose={closeModal}
@@ -401,10 +414,10 @@ const filteredRollups = rollups.filter((item) =>
                         </form>
                       </div>
                       <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" onClick={closeModal}>
+                        <button type="button" className="btn btn-md btn-outline-light bg-danger" onClick={closeModal}>
                           Close
                         </button>
-                        <button type="button" className="btn btn-primary" onClick={handleSave}>
+                        <button type="button" className="btn btn-md btn-outline-light bg-success" onClick={handleSave}>
                           Add
                         </button>
                       </div>
@@ -430,7 +443,7 @@ const filteredRollups = rollups.filter((item) =>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body flex-grow-1">
+            <div className="modal-body ">
               <form>
                 <div className="form-group">
                   <label htmlFor="name">Crypto Currency</label>
@@ -446,10 +459,10 @@ const filteredRollups = rollups.filter((item) =>
               </form>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={closeModalCrypto}>
+              <button type="button" className="btn btn-md btn-outline-light bg-danger" onClick={closeModalCrypto}>
                 Close
               </button>
-              <button type="button" className="btn btn-primary"  onClick={() => removeCrypto(name)}>
+              <button type="button" className="btn btn-md btn-outline-light bg-success"  onClick={() => removeCrypto(name)}>
                 Remove
               </button>
             </div>

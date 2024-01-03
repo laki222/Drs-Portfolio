@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Box } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
  
@@ -58,6 +59,7 @@ function Login(props) {
     ];
      
     return (
+      <Box h="100vh" maxH={1700} padding={10}>
     <div>
         <div className="container h-50">
           <div className="container-fluid h-custom">
@@ -68,25 +70,25 @@ function Login(props) {
               <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
                 <form>
                   <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-                    <p className="lead fw-normal mb-0 me-3">Log Into Your Account</p>
+                    <p className="lead fw-normal mb-0 me-3" style={{ color: 'white' }}>Log Into Your Account</p>
                   </div>
   
                   <div className="form-outline mb-4">
-                  <label className="form-label" htmlFor="form3Example3">Email address</label>
+                  <label className="form-label" htmlFor="form3Example3" style={{ color: 'white' }}>Email address</label>
                     <input type="email" value={loginForm.email} onChange={handleChange} text={loginForm.email} name="email" id="form3Example3" className="form-control form-control-lg" placeholder="Enter a valid email address" />
                     
                   </div>
   
               
                   <div className="form-outline mb-3">
-                  <label className="form-label" htmlFor="form3Example4">Password</label>
+                  <label className="form-label" htmlFor="form3Example4" style={{ color: 'white' }}>Password</label>
                     <input type="password" value={loginForm.password} onChange={handleChange} text={loginForm.password} name="password" id="form3Example4" className="form-control form-control-lg" placeholder="Enter password" />
                     
                   </div>
   
                   <div className="text-center text-lg-start mt-4 pt-2">
                     <button type="button" className="btn btn-primary btn-lg" onClick={btnlogin} >Login</button>
-                    <p className="small fw-bold mt-2 pt-1 mb-0">Don't have an account?{' '}
+                    <p style={{ color: 'white' }} className="small fw-bold mt-2 pt-1 mb-0">Don't have an account?{' '}
                     <a className="link-danger"   href="/register" >Register</a></p>
                   </div>
   
@@ -96,6 +98,7 @@ function Login(props) {
           </div>
         </div>
     </div>
+    </Box>
   );
    
 }

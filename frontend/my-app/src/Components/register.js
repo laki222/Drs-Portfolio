@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Box } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
  
@@ -127,67 +128,68 @@ function Register(props) {
      
 
     return (
-        <div>
+      <Box h="100vh" maxH={1700} padding={10}>
+        
           <div className="container h-30 align-items-start">
             <div className="container-fluid h-custom">
               <div className="row d-flex justify-content-center align-items-center h-20">
                 <div className="col-xl-5 position-relative">
                   <img src={imgs[0]} className="img-fluid mt-0" alt="Registration" style={{ align: 'self-start' }} />
                 </div>
-                <div className="col-xl-4 offset-xl-1">
+                <div className="col-xl-4 offset-xl-1" style={{ borderColor: 'white' }}>
                   <form>
                     <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-                      <p className="lead fw-normal mb-0 me-3">Registration</p>
+                      <p className="lead fw-normal mb-0 me-3" style={{ color: 'white' }}>Registration</p>
                     </div>
       
                     <div className="form-outline mb-1">
-                      <label className="form-label" htmlFor="form3Example1">Email address</label>
+                      <label className="form-label" htmlFor="form3Example1" style={{ color: 'white' }}>Email address</label>
                       <input type="email" value={loginForm.Email} onChange={handleChange} name="Email" id="form3Example1" className="form-control form-control-md" placeholder="Enter a valid email address" />
                     </div>
       
                     <div className="form-outline mb-1">
-                      <label className="form-label" htmlFor="form3Example2">Password</label>
+                      <label className="form-label" htmlFor="form3Example2" style={{ color: 'white' }}>Password</label>
                       <input type="password" value={loginForm.Password} onChange={handleChange} name="Password" id="form3Example2" className="form-control form-control-md" placeholder="Enter password" />
                     </div>
       
                     <div className="form-outline mb-1">
-                      <label className="form-label" htmlFor="form3Example5">Confirm password</label>
+                      <label className="form-label" htmlFor="form3Example5" style={{ color: 'white' }}>Confirm password</label>
                       <input type="password" value={loginForm.confirmPassword} onChange={handleChange} name="confirmPassword" id="form3Example5" className="form-control form-control-md" placeholder="Enter password" />
                     </div>
       
                     <div className="form-outline mb-1">
-                      <label className="form-label" htmlFor="form3Example6">First name</label>
+                      <label className="form-label" htmlFor="form3Example6" style={{ color: 'white' }}>First name</label>
                       <input type="text" value={loginForm.FirstName} onChange={handleChange} name="FirstName" id="form3Example6" className="form-control form-control-md" placeholder="Enter first name" />
                     </div>
       
                     <div className="form-outline mb-1">
-                      <label className="form-label" htmlFor="form3Example7">Last name</label>
+                      <label className="form-label" htmlFor="form3Example7" style={{ color: 'white' }}>Last name</label>
                       <input type="text" value={loginForm.LastName} onChange={handleChange} name="LastName" id="form3Example7" className="form-control form-control-md" placeholder="Enter last name" />
                     </div>
       
                     <div className="form-outline mb-1">
-                      <label className="form-label" htmlFor="form3Example8">Phone</label>
+                      <label className="form-label" htmlFor="form3Example8" style={{ color: 'white' }}>Phone</label>
                       <input type="tel" value={loginForm.Phone} onChange={handleChange} name="Phone" id="form3Example8" className="form-control form-control-md" placeholder="Enter phone number" />
                     </div>
       
                     <div className="form-outline mb-1">
-                      <label className="form-label" htmlFor="form3Example9">Country</label>
+                      <label className="form-label" htmlFor="form3Example9" style={{ color: 'white' }}>Country</label>
                       <input type="text" value={loginForm.Country} onChange={handleChange} name="Country" id="form3Example9" className="form-control form-control-md" placeholder="Enter country" />
                     </div>
       
                     <div className="form-outline mb-1">
-                      <label className="form-label" htmlFor="form3Example10">City</label>
+                      <label className="form-label" htmlFor="form3Example10" style={{ color: 'white' }}>City</label>
                       <input type="text" value={loginForm.City} onChange={handleChange} name="City" id="form3Example10" className="form-control form-control-md" placeholder="Enter city" />
                     </div>
       
                     <div className="form-outline mb-1">
-                      <label className="form-label" htmlFor="form3Example11">Address</label>
+                      <label className="form-label" htmlFor="form3Example11" style={{ color: 'white' }}>Address</label>
                       <input type="text" value={loginForm.Address} onChange={handleChange} name="Address" id="form3Example11" className="form-control form-control-md" placeholder="Enter address" />
                     </div>
       
                     <div className="text-center text-lg-start mt-4 pt-2">
                       <button type="button" className="btn btn-primary btn-lg" onClick={btnregister}>Register</button>
-                      <p className="small fw-bold mt-2 pt-1 mb-0">Have an account? <a  href="/login" className="link-danger">Login</a></p>
+                      <p style={{ color: 'white' }} className="small fw-bold mt-2 pt-1 mb-0">Have an account? <a  href="/login" className="link-danger">Login</a></p>
                     </div>
       
                   </form>
@@ -195,7 +197,7 @@ function Register(props) {
               </div>
             </div>
           </div>
-        </div>
+        </Box>
       );
       
    

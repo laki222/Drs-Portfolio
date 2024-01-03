@@ -23,15 +23,15 @@ function Header(props) {
     const logged = localStorage.getItem('email');
      
     return(
-      <nav className="navbar navbar-expand-lg bg-dark">
-      <div className="container-fluid">
-      <div className="collapse navbar-collapse" id="navbarSupportedContent">
+      <nav className="navbar navbar-expand-lg bg-dark" >
+      <div className="container-fluid" >
+      <div className="collapse navbar-collapse" id="navbarSupportedContent" >
         {!logged ? (
         <>
         <div className="container-fluid">
-    <a className="navbar-brand " href="/" style={{ color: 'white' }}>
+    <a className="navbar-brand " href="/"  >
       <img src="/logo192.png" alt="" width="30" height="24" className="d-inline-block align-text-top"/>
-      Home
+      My Portfolio
     </a>
   
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,10 +43,10 @@ function Header(props) {
         </>) : 
         (
         <>
-          <div className="container-fluid">
-    <a className="navbar-brand " href="/home" style={{ color: 'white' }}>
+          <div className="container-fluid"  >
+    <a className="navbar-brand " href="/home" >
       <img src="/logo192.png" alt="" width="30" height="24" className="d-inline-block align-text-top"/>
-      Home
+      My Portfolio
     </a>
   
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
