@@ -143,3 +143,25 @@ def edit_profile(email):
         db.session.close()
 
 
+@users_api.route('/api/changepassoword',methods=["PUT"])
+@jwt_required() 
+def change_passoword():
+    data = request.get_json()
+    user_email = get_jwt_identity()
+    print(user_email)
+    if not user_email:
+        return jsonify({"error": "Unauthorized Access"}), 401
+       
+    user = User.query.filter_by(Email=user_email).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    user.Password = data.get('password', user.Password)
+    print(user.Password)
+    try:
+        db.session.commit()
+        return jsonify({"message": "Profile updated successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Failed to update profile. Error: {str(e)}"}), 500
+    finally:
+        db.session.close()

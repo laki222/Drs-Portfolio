@@ -36,7 +36,25 @@ function Home(props) {
     const [absoluteGain, setAbsoluteGain] = useState(0);
     const [totalGainPercent, setTotalGainPercent] = useState(0);
     const [rollups, setRollups] = useState([]);
+    
     const handleSave = () => {
+      
+      for (var i = 0; i < rollups.length; i++) {
+        if(profileData.amount>rollups[i].coins && profileData.crypto_currency===rollups[i].symbol && profileData.transaction_type==='sell'){
+          alert("The maximum you can sell is " + rollups[i].coins + ", not how much you put in");
+          return;
+        }
+        if(profileData.crypto_currency!==rollups[i].symbol){
+          alert("You are trying to sell a cryptocurrency you do not own");
+          return;
+        }
+    }
+    if(rollups.length===0 && profileData.transaction_type==='sell'){
+    alert("The first thing you can do is buy cryptocurrency");
+    return;
+    }
+
+
 
       axios({
         method: "POST",
@@ -137,7 +155,10 @@ const getPortfolio = () =>  {
       setPortfolioCost(costAccumulator);
       setPortfolioValue(valueAccumulator);
       setAbsoluteGain(absoluteGain);
-      setTotalGainPercent((absoluteGain / costAccumulator) * 100);
+      if(absoluteGain>0){
+        setTotalGainPercent((absoluteGain / costAccumulator) * 100);
+      }
+     
 
       setPortfolioDataFetched(true);
     
@@ -301,6 +322,13 @@ const filteredRollups = rollups.filter((item) =>
           dataKey="percent"
           position="top"
           formatter={(value) => `${value.toFixed(2)}%`}
+          />
+          </Bar>
+          <Bar dataKey="coins" fill="orange" name="Coins">
+          <LabelList
+          dataKey="coins"
+          position="top"
+          formatter={(value) => `${value.toFixed(2)}`}
           />
           </Bar>
         </BarChart>

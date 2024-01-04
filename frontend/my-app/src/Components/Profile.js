@@ -8,9 +8,7 @@ function Profile(props) {
  
     const [profileData, setProfileData] = useState(null)
 
-    const [formData, setFormData] = useState(null)
-
-    const [currentPassword, setCurrentPassword] = useState('');
+    const [currentPassword, setCurrentPassword] = useState("");
 
     const [editMode, setEditMode] = useState(false);
     
@@ -52,9 +50,8 @@ function Profile(props) {
             
         }))
 
-        setCurrentPassword(({
-          Password:res.Password      
-      }))
+        setCurrentPassword(res.Password)    
+      
 
       setProfileDataCheck(true);
 
@@ -70,12 +67,6 @@ function Profile(props) {
     
 
     const handleSave = () => {
-      if (currentPassword.Password !== formData.Password) {
-        console.error("Uneseni password se ne poklapa sa trenutnim passwordom.");
-        return;
-      }
-
-
       axios({
         method: "PUT",
         url:`http://127.0.0.1:5000/api/edit/${email}`, 
@@ -87,7 +78,6 @@ function Profile(props) {
           country: profileData.Country,
           phone: profileData.Phone,
           email: profileData.Email,
-          password: profileData.Password
        },
         headers: {
           Authorization: 'Bearer ' + props.token
@@ -102,6 +92,8 @@ function Profile(props) {
           console.error('Error updating profile:', error);
         });
     };
+
+
 
 
     function logMeOut() {
@@ -124,6 +116,51 @@ function Profile(props) {
       })
   }
 
+  function changePassword(New){
+    console.log(current)
+    console.log(currentPassword)
+
+    if(current!==currentPassword){
+      alert("The current passoword is not correct,try new one")
+      return;
+    }
+
+    axios({
+      method: "PUT",
+      url:`http://127.0.0.1:5000/api/changepassoword`, 
+      data:{
+        password:New
+     },
+      headers: {
+        Authorization: 'Bearer ' + props.token
+      }
+    })
+      .then((response) => {
+        console.log(response);
+        closeModalPassword(); // Zatvori modal nakon što se podaci sačuvaju
+        setProfileDataCheck(false);
+        setCurrent("");
+        setNew("");
+      })
+      .catch((error) => {
+        console.error('Error updating profile:', error);
+      });
+  };
+
+
+  const [New,setNew] = useState("");
+
+  const [current,setCurrent] = useState("");
+
+  const [EditModePassword, setEditModePassword] = useState(false);
+
+  const openModalPassword = () => {
+    setEditModePassword(true);
+  };
+
+  const closeModalPassword = () => {
+    setEditModePassword(false);
+  };
 
     const openModal = () => {
       setEditMode(true);
@@ -183,9 +220,12 @@ function Profile(props) {
                             <p className="text-muted">{`${profileData.City}, ${profileData.Address}`}</p>
                           </div>
                           <div className="col-6 mb-3">
-                            <button type="button" className="btn btn-lg btn-outline-light bg-dark" onClick={openModal} >Edit Profile</button>
+                            <button type="button" className="btn btn-lg btn-outline-light bg-dark" onClick={openModal} >Edit my profile</button>
                           </div>
                           <div className="col-6 mb-3">
+                            <button type="button" className="btn btn-lg btn-outline-light bg-dark" onClick={openModalPassword} >Change my password</button>
+                          </div>
+                          <div className="col-7 mb-3">
                           <button type="button" className="btn btn-lg btn-outline-danger bg-dark" onClick={() => logMeOut()}>Logout</button>
                           </div>
                         </div>
@@ -225,35 +265,6 @@ function Profile(props) {
                         name="EmailEdit"
                         value={profileData?.Email || ''}
                         onChange={(e) => setProfileData({ ...profileData, Email: e.target.value })}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="PasswordCurrent">Enter the current password</label>
-                      <input
-                        
-                        type="password"
-                        className="form-control"
-                        id="PasswordCurrent"
-                        name="PasswordCurrent"
-                        
-                        onChange={(e) => setFormData({ ...formData, Password: e.target.value })}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="Password">New password</label>
-                      <input
-                        
-                        type="password"
-                        className="form-control"
-                        id="Password"
-                        name="Password"
-                        onChange={(e) => {
-                          const newPassword = e.target.value;
-                          if (newPassword.trim() !== '') {
-                            setProfileData({ ...profileData, Password: newPassword });
-                          }}}
                       />
                     </div>
 
@@ -340,6 +351,64 @@ function Profile(props) {
               </div>
             </div>
           </Modal>
+
+          <Modal
+        isOpen={EditModePassword}
+        onRequestClose={closeModalPassword}
+        contentLabel="Edit Profile Modal"
+        ariaHideApp={false}
+        style={{ content: { height: '50%',margin: 'auto', width: '25%', background: 'none', 
+        border: 'none' } }}
+      >
+        <div className="modal-dialog" role="document">
+          <div className="modal-content d-flex flex-column h-100">
+            <div className="modal-header">
+              <h5 className="modal-title" id="editProfileModalLabel">
+                Change password 
+              </h5>
+              <button type="button" className="close" onClick={closeModalPassword} aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body ">
+              <form>
+                <div className="form-group">
+                  <label htmlFor="current">Current password</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="current"
+                    name="current"
+                    value={current}
+                    onChange={(e) => setCurrent(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="new">New password</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="new"
+                    name="new"
+                    value={New}
+                    onChange={(e) => setNew(e.target.value)}
+                  />
+                </div>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-md btn-outline-light bg-danger" onClick={closeModalPassword}>
+                Close
+              </button>
+              <button type="button" className="btn btn-md btn-outline-light bg-success"  onClick={() => changePassword(New)}>
+                Change
+              </button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+
                 </div>
 
 
