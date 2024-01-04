@@ -155,7 +155,7 @@ const getPortfolio = () =>  {
       setPortfolioCost(costAccumulator);
       setPortfolioValue(valueAccumulator);
       setAbsoluteGain(absoluteGain);
-      if(absoluteGain>0){
+      if(data.length>0){
         setTotalGainPercent((absoluteGain / costAccumulator) * 100);
       }
      

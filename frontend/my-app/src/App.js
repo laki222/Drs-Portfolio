@@ -14,8 +14,8 @@ function App() {
   const { token, removeToken, setToken } = useToken();
 
   return (
-    <div className="vh-1950 gradient-custom" style={{ backgroundColor: '#191919' }}>
-      <div className="container vh-1950" style={{ backgroundColor: '#191919' }}>
+    <div className="vh-2950 gradient-custom" style={{ backgroundColor: '#191919' }}>
+      <div className="container vh-2950" style={{ backgroundColor: '#191919' }}>
         <BrowserRouter>
           <Header token={removeToken} />
           {!token && token !== "" && token !== undefined ? (

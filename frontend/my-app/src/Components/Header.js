@@ -29,8 +29,8 @@ function Header(props) {
         {!logged ? (
         <>
         <div className="container-fluid">
-    <a className="navbar-brand " href="/"  >
-      <img src="/logo192.png" alt="" width="30" height="24" className="d-inline-block align-text-top"/>
+    <a className="navbar-brand " href="/" style={{ color: 'white' , fontSize: '24px'}} >
+      <img src="/logo192.png"  width="27" height="27" className="d-inline-block align-text-center"/>
       My Portfolio
     </a>
   
@@ -44,8 +44,8 @@ function Header(props) {
         (
         <>
           <div className="container-fluid"  >
-    <a className="navbar-brand " href="/home" >
-      <img src="/logo192.png" alt="" width="30" height="24" className="d-inline-block align-text-top"/>
+    <a className="navbar-brand " href="/home"  style={{ color: 'white', fontSize: '24px' }}>
+      <img src="/logo192.png"  width="27" height="27" className="d-inline-block align-text-top"/>
       My Portfolio
     </a>
   
