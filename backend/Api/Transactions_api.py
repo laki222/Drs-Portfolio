@@ -9,9 +9,23 @@ from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, uns
 import requests
 import functools
 from datetime import datetime, timedelta
+from multiprocessing import Process,Value,Manager,Queue
+import dill
 
 transactions_api = Blueprint("Transactions_api", __name__)
 LIVE_PRICE_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+
+class DillProcess(Process):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._target = dill.dumps(self._target)  # Save the target function as bytes, using dill
+
+    def run(self):
+        if self._target:
+            self._target = dill.loads(self._target)    # Unpickle the target function before executing
+            self._target(*self._args, **self._kwargs)
+
 
 @transactions_api.route('/api/transaction', methods=['POST'])
 @jwt_required() 
@@ -81,20 +95,19 @@ def transactionRemove(id):
         return jsonify({"error": str(e)}), 500
 
 
-
+def create_portfolio_entry():
+    return {
+        "coins": 0,
+        "total_cost": 0,
+        "total_equity": 0,
+        "live_price": 0,
+        "percent": 0
+    }
 @transactions_api.route("/api/portfolio", methods=['GET'])
 @jwt_required()
 def portfolioCalculate():
     user_email = get_jwt_identity()
-    portfolio = defaultdict(
-        lambda: {
-            "coins": 0,
-            "total_cost": 0,
-            "total_equity": 0,
-            "live_price": 0,
-            "percent": 0
-        }
-    )
+    portfolio = defaultdict(create_portfolio_entry)
 
     value_accumulator = 0
     cost_accumulator = 0
@@ -144,7 +157,26 @@ def portfolioCalculate():
         }
     response = requests.get(LIVE_PRICE_URL, params=params, headers=headers)
     data = response.json()
-    for symbol in portfolio:
+    rollups_response = Queue()
+    process = DillProcess(target=test, args=(portfolio, symbol_to_coin_id_map, data, rollups_response))
+    process.start()
+    process.join()
+    result_value = []
+    while not rollups_response.empty():
+        entries = rollups_response.get_nowait()
+        for entry in entries:
+            if not any(entry['symbol'] == current_entry['symbol'] for current_entry in result_value):
+                result_value.append(entry)
+
+    print(result_value)
+    return jsonify(result_value)
+
+def test(portfolio,symbol_to_coin_id_map,data,result_value):
+     print('test')
+     cost_accumulator=0
+     value_accumulator=0
+     rollups_response = []
+     for symbol in portfolio:
         coin_id = symbol_to_coin_id_map.get(symbol, '')
         print(coin_id)
         if not coin_id:
@@ -152,10 +184,12 @@ def portfolioCalculate():
      
         for crypto_data in data['data']:
               if crypto_data['slug'] == coin_id:
+                print(coin_id)
                 live_price = crypto_data['quote']['USD']['price']
                 portfolio[symbol]['total_equity'] = float(
                         portfolio[symbol]['coins']) * live_price
 
+                portfolio[symbol]['live_price']=live_price
                 cost_accumulator += portfolio[symbol]["total_cost"]
                 value_accumulator += portfolio[symbol]['total_equity']
                     
@@ -175,10 +209,8 @@ def portfolioCalculate():
                                 "percent": portfolio[symbol]['percent']
                             }
                         )
-
-    return jsonify(rollups_response)
-
-
+               
+        result_value.put(rollups_response)
 
 @transactions_api.route('/api/cryptoremove/<name>', methods=['POST'])
 @jwt_required() 

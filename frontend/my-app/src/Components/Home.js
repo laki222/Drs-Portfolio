@@ -44,7 +44,7 @@ function Home(props) {
           alert("The maximum you can sell is " + rollups[i].coins + ", not how much you put in");
           return;
         }
-        if(profileData.crypto_currency!==rollups[i].symbol){
+        if(profileData.crypto_currency!==rollups[i].symbol && profileData.transaction_type==='sell'){
           alert("You are trying to sell a cryptocurrency you do not own");
           return;
         }
@@ -380,7 +380,7 @@ const filteredRollups = rollups.filter((item) =>
                                 type="radio"
                                 className="form-check-input"
                                 id="sell"
-                                name="transactionType"
+                                name="sell"
                                 value="sell"
                             
                                 onChange={() => setProfileData({ ...profileData, transaction_type: "sell" })}
@@ -394,7 +394,7 @@ const filteredRollups = rollups.filter((item) =>
                                 type="radio"
                                 className="form-check-input"
                                 id="buy"
-                                name="transactionType"
+                                name="buy"
                                 value="buy"
                                
                                 onChange={() => setProfileData({ ...profileData, transaction_type: "buy" })}

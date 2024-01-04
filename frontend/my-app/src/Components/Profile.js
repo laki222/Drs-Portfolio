@@ -292,7 +292,7 @@ function Profile(props) {
                     </div>
                   
                     <div className="form-group">
-                      <label htmlFor="LastName">Country</label>
+                      <label htmlFor="Country">Country</label>
                       <input
                         type="text"
                         className="form-control"
@@ -303,7 +303,7 @@ function Profile(props) {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="LastName">City</label>
+                      <label htmlFor="City">City</label>
                       <input
                         type="text"
                         className="form-control"
@@ -314,7 +314,7 @@ function Profile(props) {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="LastName">Address</label>
+                      <label htmlFor="Address">Address</label>
                       <input
                         type="text"
                         className="form-control"
@@ -326,7 +326,7 @@ function Profile(props) {
                     </div>
 
                     <div className="form-group">
-                      <label htmlFor="LastName">Phone</label>
+                      <label htmlFor="Phone">Phone</label>
                       <input
                         type="tel"
                         className="form-control"
