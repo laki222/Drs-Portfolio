@@ -32,7 +32,6 @@ class DillProcess(Process):
 def transaction():
     try:
         user_email = get_jwt_identity()
-        print(user_email)
         transaction_data = request.get_json()
         transaction_date_str = transaction_data['transaction_date']
         transaction_date = datetime.strptime(transaction_date_str, "%Y-%m-%d") 
@@ -166,23 +165,21 @@ def portfolioCalculate():
             if not any(entry['symbol'] == current_entry['symbol'] for current_entry in result_value):
                 result_value.append(entry)
 
-    print(result_value)
+    
     return jsonify(result_value)
 
 def test(portfolio,symbol_to_coin_id_map,data,result_value):
-     print('test')
      cost_accumulator=0
      value_accumulator=0
      rollups_response = []
      for symbol in portfolio:
         coin_id = symbol_to_coin_id_map.get(symbol, '')
-        print(coin_id)
         if not coin_id:
             continue
      
         for crypto_data in data['data']:
               if crypto_data['slug'] == coin_id:
-                print(coin_id)
+                
                 live_price = crypto_data['quote']['USD']['price']
                 portfolio[symbol]['total_equity'] = float(
                         portfolio[symbol]['coins']) * live_price

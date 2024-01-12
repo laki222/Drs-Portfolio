@@ -14,6 +14,12 @@ RUN pip install mysql-connector-python
 
 RUN pip install flask-cors
 
+RUN pip install flask-jwt-extended
+
+RUN pip install dill
+
+RUN pip install requests
+
 COPY . .
 
 EXPOSE 5000

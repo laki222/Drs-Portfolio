@@ -81,17 +81,19 @@ function Home(props) {
     };
 
     function removeCrypto(Cryptoname){
+      console.log(Cryptoname)
       var isCryptoOwned = false;
-      for (var i = 0; i < rollups.length; i++) {
-        if(Cryptoname!==rollups[i].symbol ){
-          isCryptoOwned = true;
-          break;
+        for (var i = 0; i < rollups.length; i++) {
+          if (Cryptoname === rollups[i].symbol) {
+            isCryptoOwned = true;
+            break;
+          }
         }
-      }
-      if (!isCryptoOwned) {
-        alert("You are trying to sell a cryptocurrency you do not own");
-        return;
-      }
+
+        if (!isCryptoOwned) {
+          alert("You are trying to remove a cryptocurrency you do not own");
+          return
+        }
         if(rollups.length===0){
           alert("The first thing you can do is buy cryptocurrency");
           return;
