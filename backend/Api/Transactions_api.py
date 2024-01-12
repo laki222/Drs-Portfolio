@@ -109,8 +109,6 @@ def portfolioCalculate():
     user_email = get_jwt_identity()
     portfolio = defaultdict(create_portfolio_entry)
 
-    value_accumulator = 0
-    cost_accumulator = 0
     result = (
         CryptoTransaction.query
         .with_entities(

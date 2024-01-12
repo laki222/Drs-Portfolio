@@ -81,6 +81,21 @@ function Home(props) {
     };
 
     function removeCrypto(Cryptoname){
+      var isCryptoOwned = false;
+      for (var i = 0; i < rollups.length; i++) {
+        if(Cryptoname!==rollups[i].symbol ){
+          isCryptoOwned = true;
+          break;
+        }
+      }
+      if (!isCryptoOwned) {
+        alert("You are trying to sell a cryptocurrency you do not own");
+        return;
+      }
+        if(rollups.length===0){
+          alert("The first thing you can do is buy cryptocurrency");
+          return;
+          }
       axios({
         method: "POST",
         url:`http://127.0.0.1:5000/api/cryptoremove/${Cryptoname}`, 
@@ -276,7 +291,7 @@ const filteredRollups = rollups.filter((item) =>
         color='black'
         border='white'
         type="text"
-        placeholder="Search by symbol"
+        placeholder="Search by symbol 🔍"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
@@ -380,7 +395,7 @@ const filteredRollups = rollups.filter((item) =>
                                 type="radio"
                                 className="form-check-input"
                                 id="sell"
-                                name="sell"
+                                name="TransactionType"
                                 value="sell"
                             
                                 onChange={() => setProfileData({ ...profileData, transaction_type: "sell" })}
@@ -394,7 +409,7 @@ const filteredRollups = rollups.filter((item) =>
                                 type="radio"
                                 className="form-check-input"
                                 id="buy"
-                                name="buy"
+                                name="TransactionType"
                                 value="buy"
                                
                                 onChange={() => setProfileData({ ...profileData, transaction_type: "buy" })}
