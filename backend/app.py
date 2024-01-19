@@ -10,7 +10,7 @@ from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:test123@localhost:3306/projekat?auth_plugin=mysql_native_password'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:test123@host.docker.internal:3306/projekat?auth_plugin=mysql_native_password'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'lazar-brankovic'
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
