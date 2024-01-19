@@ -1,14 +1,14 @@
 import React, { } from 'react';
 import './App.css';   
 import {BrowserRouter, Routes, Route} from 'react-router-dom'; 
-import Login from './components/Login'
-import Header from './components/Header'
-import Profile from './components/Profile'
-import useToken from './components/useToken'
-import Register from './components/Register'
-import Home from './components/Home'
-import HomeNotLogged from './components/HomeNotLogged'
-import Transactions from './components/Transactions';
+import Login from './Components/Login'
+import Header from './Components/Header'
+import Profile from './Components/Profile'
+import useToken from './Components/useToken'
+import Register from './Components/Register'
+import Home from './Components/Home'
+import HomeNotLogged from './Components/HomeNotLogged'
+import Transactions from './Components/Transactions';
 
 function App() {
   const { token, removeToken, setToken } = useToken();
