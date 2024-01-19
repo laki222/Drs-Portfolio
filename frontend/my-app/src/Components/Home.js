@@ -41,9 +41,56 @@ function Home(props) {
       
       var foundCurrency = false;
 
+      
+      if (profileData.crypto_currency === '' || profileData.crypto_currency ===undefined) {
+        alert("Crypto currency is required.");
+        return;
+      }
+    
+
+      console.log(profileData.crypto_currency)
+      if(profileData.crypto_currency!=="BTC" && profileData.crypto_currency!=="ETH" && profileData.crypto_currency!=="SOL" 
+      && profileData.crypto_currency!=="ADA" && profileData.crypto_currency!=="LINK" && profileData.crypto_currency!=="MANA" ){
+        alert("Crypto currency does not exist");
+        return;
+      }
+
+      if (profileData.transaction_type !== "sell" && profileData.transaction_type !== "buy") {
+        alert("Transaction type is required.");
+        return;
+      }
+    
+      if (profileData.transaction_date === '') {
+        alert("Transaction date is required.");
+        return;
+      }
+    
+      if (profileData.amount === '') {
+        alert("Amount is required.");
+        return;
+      }
+      const parsedAmount = parseFloat(profileData.amount);
+
+      if (isNaN(parsedAmount) || parsedAmount <= 0) {
+        alert("Amount must be a valid number greater than 0.");
+        return;
+      }
+
+      if (profileData.usd_value === '') {
+        alert("Usd value is required.");
+        return;
+      }
+      const parsedUsd_value = parseFloat(profileData.usd_value);
+
+      if (isNaN(parsedUsd_value) || parsedUsd_value <= 0) {
+        alert("Usd value must be a valid number greater than 0.");
+        return;
+      }
+
+
+
+
       for (var i = 0; i < rollups.length; i++) {
-
-
         if (profileData.amount > rollups[i].coins && profileData.crypto_currency === rollups[i].symbol && profileData.transaction_type === 'sell') {
             alert("The maximum you can sell is " + rollups[i].coins + ", not how much you put in");
             return;
@@ -128,10 +175,24 @@ function Home(props) {
 
     const openModal = () => {
       setEditMode(true);
+      setProfileData({
+        crypto_currency: "",
+        transaction_type: "",
+        transaction_date: "",
+        amount: "",
+        usd_value: "",
+      });
     };
   
     const closeModal = () => {
       setEditMode(false);
+      setProfileData({
+        crypto_currency: "",
+        transaction_type: "",
+        transaction_date: "",
+        amount: "",
+        usd_value: "",
+      });
     };
 
     
