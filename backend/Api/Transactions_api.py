@@ -189,12 +189,13 @@ def test(portfolio,symbol_to_coin_id_map,data,result_value):
                 value_accumulator += portfolio[symbol]['total_equity']
                     
                 absolute_gain = value_accumulator - cost_accumulator
+
+                if(portfolio[symbol]['coins']>0):
+                        
+                    portfolio[symbol]['percent'] = ((absolute_gain / cost_accumulator) * 100)
                     
-                portfolio[symbol]['percent'] = ((absolute_gain / cost_accumulator) * 100)
-                    
-                cost_accumulator=0
-                value_accumulator=0
-                rollups_response.append(
+                
+                    rollups_response.append(
                             {
                                 "symbol": symbol,
                                 "live_price": portfolio[symbol]['live_price'],
@@ -204,6 +205,10 @@ def test(portfolio,symbol_to_coin_id_map,data,result_value):
                                 "percent": portfolio[symbol]['percent']
                             }
                         )
+                
+                        
+                cost_accumulator=0
+                value_accumulator=0
                
         result_value.put(rollups_response)
 

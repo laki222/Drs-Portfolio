@@ -1,19 +1,16 @@
 FROM node:20.10.0-alpine
 
-WORKDIR /user/src/app
+# Set docker's working directory
+WORKDIR /app/frontend
 
-COPY ./package.json ./
-
-COPY ./package-lock.json ./
-
-RUN npm install -g react-scripts
-
-RUN npm install react
-
-RUN npm install
-
+# Copy all files from current working directory to docker's working directory
 COPY . .
 
+# Install packages from package.json
+RUN npm install
+
+# Set port for client application
 EXPOSE 3000
 
+# Run application
 CMD ["npm", "start"]
