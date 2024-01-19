@@ -39,15 +39,23 @@ function Home(props) {
     
     const handleSave = () => {
       
+      var foundCurrency = false;
+
       for (var i = 0; i < rollups.length; i++) {
-        if(profileData.amount>rollups[i].coins && profileData.crypto_currency===rollups[i].symbol && profileData.transaction_type==='sell'){
-          alert("The maximum you can sell is " + rollups[i].coins + ", not how much you put in");
-          return;
+
+
+        if (profileData.amount > rollups[i].coins && profileData.crypto_currency === rollups[i].symbol && profileData.transaction_type === 'sell') {
+            alert("The maximum you can sell is " + rollups[i].coins + ", not how much you put in");
+            return;
         }
-        if(profileData.crypto_currency!==rollups[i].symbol && profileData.transaction_type==='sell'){
-          alert("You are trying to sell a cryptocurrency you do not own");
-          return;
+        if (profileData.crypto_currency === rollups[i].symbol) {
+            foundCurrency = true;
         }
+    }
+
+    if (!foundCurrency && profileData.transaction_type === 'sell') {
+        alert("You are trying to sell a cryptocurrency you do not own");
+        return;
     }
     if(rollups.length===0 && profileData.transaction_type==='sell'){
     alert("The first thing you can do is buy cryptocurrency");

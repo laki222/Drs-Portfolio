@@ -5,7 +5,7 @@ import Login from './Components/Login'
 import Header from './Components/Header'
 import Profile from './Components/Profile'
 import useToken from './Components/useToken'
-import Register from './Components/Register'
+import Register from './Components/register'
 import Home from './Components/Home'
 import HomeNotLogged from './Components/HomeNotLogged'
 import Transactions from './Components/Transactions';
